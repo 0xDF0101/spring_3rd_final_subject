@@ -57,7 +57,7 @@ public class MemberService {
         }
         MemberEntity memberEntity = (MemberEntity) o;
 
-        return new MemberResponse(memberEntity.getId(), memberEntity.getName(), memberEntity.getAge(), memberEntity.getRole());
+        return new MemberResponse(memberEntity.getId(), memberEntity.getName(), memberEntity.getPassword(), memberEntity.getAge(), memberEntity.getRole());
     }
 
     public List<MemberResponse> getMembers() {
@@ -68,7 +68,7 @@ public class MemberService {
         MemberEntity member;
         for(Object obj : allValues) {
             member = (MemberEntity) obj;
-            memberList.add(new MemberResponse(member.getId(), member.getName(), member.getAge(), member.getRole()));
+            memberList.add(new MemberResponse(member.getId(), member.getName(), member.getPassword(), member.getAge(), member.getRole()));
         }
         return memberList;
     }
