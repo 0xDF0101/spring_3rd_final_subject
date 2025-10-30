@@ -15,8 +15,8 @@ Content-Type: application/json
 }
 
 ### csv 요청 테스트
-GET localhost:8080/members/suin
-Accept: application/xml
+GET localhost:8080/members/eugene
+Accept: text/csv
 
 ### csv POST 요청 테스트
 POST localhost:8080/members
@@ -24,3 +24,12 @@ Content-Type: text/csv
 
 id,name,password,age,role
 eugene,Eugene,qwer,25,USER
+
+### 전체 조회
+GET localhost:8080/members?size=1
+Accept: application/json
+
+### 전체 조회 xml
+GET localhost:8080/members
+Accept: application/xml
+

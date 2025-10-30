@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -57,5 +58,18 @@ public class MemberService {
         MemberEntity memberEntity = (MemberEntity) o;
 
         return new MemberResponse(memberEntity.getId(), memberEntity.getName(), memberEntity.getAge(), memberEntity.getRole());
+    }
+
+    public List<MemberResponse> getMembers() {
+
+        List<Object> allValues = redisTemplate.opsForHash().values(HASH_NAME);
+
+        List<MemberResponse> memberList = new ArrayList<>();
+        MemberEntity member;
+        for(Object obj : allValues) {
+            member = (MemberEntity) obj;
+            memberList.add(new MemberResponse(member.getId(), member.getName(), member.getAge(), member.getRole()));
+        }
+        return memberList;
     }
 }
