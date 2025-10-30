@@ -1,0 +1,26 @@
+
+### 요청 테스트
+GET localhost:8080/index
+
+### 멤버 추가 요청
+POST localhost:8080/members
+Content-Type: application/json
+
+{
+  "id": "suin",
+  "name": "Suin",
+  "password": "qwer",
+  "age": "23",
+  "role": "MEMBER"
+}
+
+### csv 요청 테스트
+GET localhost:8080/members/suin
+Accept: application/xml
+
+### csv POST 요청 테스트
+POST localhost:8080/members
+Content-Type: text/csv
+
+id,name,password,age,role
+eugene,Eugene,qwer,25,USER
