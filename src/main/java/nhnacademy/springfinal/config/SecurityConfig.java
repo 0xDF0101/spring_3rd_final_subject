@@ -25,15 +25,14 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
-//                        .requestMatchers("/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/member/**").hasRole("MEMBER")
-                        .requestMatchers("/google/**").hasRole("GOOGLE")
-                        .requestMatchers("/members").permitAll()
-//                        .requestMatchers("/login/process").permitAll()
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/**").permitAll()
+//                        .requestMatchers("/admin/**").hasRole("ADMIN")
+//                        .requestMatchers("/member/**").hasRole("MEMBER")
+//                        .requestMatchers("/google/**").hasRole("GOOGLE")
+//                        .requestMatchers("/members").permitAll()
+//                        .requestMatchers("/auth/login").permitAll()
+//                        .requestMatchers("/login").permitAll()
+//                        .anyRequest().authenticated()
                 );
         // csrf 비활성화
         http.csrf(AbstractHttpConfigurer::disable); // (테스트용) CSRF 비활성화
