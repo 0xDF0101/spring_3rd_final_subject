@@ -7,11 +7,11 @@ POST localhost:8080/members
 Content-Type: application/json
 
 {
-  "id": "suin",
-  "name": "Suin",
+  "id": "google",
+  "name": "Google",
   "password": "qwer",
-  "age": "23",
-  "role": "MEMBER"
+  "age": "43",
+  "role": "GOOGLE"
 }
 
 ### csv 요청 테스트

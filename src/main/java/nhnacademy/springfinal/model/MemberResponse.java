@@ -12,7 +12,6 @@ public class MemberResponse {
     private String id;
     private String name;
     private String password;
-    // ---> 얘는 반환 안해도 되잖아
     private Integer age;
     private Role role;
 }

@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.security.cert.CertStoreException;
@@ -14,6 +15,12 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/auth/login").setViewName("auth/login");
+        registry.addViewController("/403").setViewName("403");
+    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
@@ -25,6 +32,8 @@ public class WebConfig implements WebMvcConfigurer {
         converters.add(new CsvHttpMessageConverter()); // csv GET요청에 대한 컨버터
         converters.add(new CsvToMemberRequestConverter()); // csv Post 요청에 대한 컨버터
     }
+
+
 
 
 }

@@ -1,1 +1,35 @@
-로그인 완료~!
+<!DOCTYPE html>
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8" />
+    <title>Home</title>
+</head>
+<body>
+Welcome, <span th:text="${loginName}" /><br />
+<a href="/admin">Admin Page</a>
+<br>
+<a href="/member">Member Page</a>
+<br>
+<a href="/google">Google Page</a>
+<br>
+<a href="/logout">Logout</a>
+<br>
+
+
+<div sec:authorize="hasRole('MEMBER')">
+    member!!!
+</div>
+
+<div sec:authorize="hasRole('ADMIN')">
+    admin!!!
+</div>
+
+<div sec:authorize="hasRole('GOOGLE')">
+    google!!!
+</div>
+
+<div sec:authorize="hasRole('ADMIN') or hasRole('MEMBER') or hasRole('GOOGLE')">
+    member or admin or google
+</div>
+</body>
+</html>
