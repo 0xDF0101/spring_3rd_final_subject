@@ -28,8 +28,8 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
 
-//         0 으로 초기화
-//        redisTryLogin.opsForValue().set(KEY_NAME, 0L);
+
+        redisTemplate.opsForValue().set(KEY_NAME, 0L); // 성공 시 초기화
 
         // 로그인 성공시 세션에 로그인한 사용자 저장
 

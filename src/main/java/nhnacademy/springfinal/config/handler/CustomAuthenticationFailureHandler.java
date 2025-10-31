@@ -14,28 +14,34 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     private final String KEY_NAME = "LoginCounter";
+    private final String LOCK = "Lock";
+    private RedisTemplate<String, Object> redisTemplate;
+    public CustomAuthenticationFailureHandler(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException {
 
-//        Long cnt = redisTryLogin.opsForValue().get(KEY_NAME);
-//        if(cnt==null) {
-//            redisTryLogin.opsForValue().set(KEY_NAME, 0L); // null일 경우 0으로 초기화
-//        }
-//        cnt++;
-//        if(cnt>5) { // 로그인 시도 횟수 5회 넘음
-//            log.warn("로그인 시도 횟수가 5번을 초과했습니다.");
-//             ----> 여기다가 로직 넣어야 함
-//        }
-//        redisTryLogin.opsForValue().set(KEY_NAME, cnt);
-
+        Object o = redisTemplate.opsForValue().get(KEY_NAME);
+        if(o == null) {
+            redisTemplate.opsForValue().set(KEY_NAME, 0);
+        } else {
+            long cnt = (Long) o;
+            if(cnt > 5) {
+                redisTemplate.expire(LOCK, 5, TimeUnit.MINUTES);
+            } else {
+                redisTemplate.opsForValue().set(KEY_NAME, ++cnt);
+            }
+        }
 
         response.sendRedirect("/auth/login?error=true");
     }
