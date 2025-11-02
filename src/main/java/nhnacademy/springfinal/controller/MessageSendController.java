@@ -16,10 +16,11 @@ public class MessageSendController {
     private final MemberService memberService;
     private final MessengerService messengerService;
 
+    // 메세지 테스트
     @PostMapping("/send/{id}")
     public void sendMessage(@PathVariable String id) {
         MemberResponse getMember = memberService.getMember(id);
         Member member = new Member(getMember.getId(), getMember.getName(), getMember.getPassword(), getMember.getAge(), getMember.getRole());
-        messengerService.sendMessenger(member);
+        messengerService.sendMessenger();
     }
 }

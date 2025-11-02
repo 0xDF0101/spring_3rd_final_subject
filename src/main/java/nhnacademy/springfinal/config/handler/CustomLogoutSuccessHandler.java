@@ -38,6 +38,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
             response.addCookie(sessionCookie);
         }
 
-        response.sendRedirect("/login");
+        response.sendRedirect("/auth/login");
     }
 }

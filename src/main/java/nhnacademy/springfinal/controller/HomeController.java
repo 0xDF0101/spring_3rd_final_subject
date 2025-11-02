@@ -17,4 +17,9 @@ public class HomeController {
         return home;
     }
 
+    @GetMapping("/locked")
+    public String locked() {
+        return "lock";
+    }
+
 }

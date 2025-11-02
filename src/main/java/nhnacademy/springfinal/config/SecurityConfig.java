@@ -19,20 +19,23 @@ public class SecurityConfig {
     private UserAuthenticationFilter userAuthenticationFilter;
     @Autowired
     private CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    @Autowired
+    private LoginLockFilter loginLockFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationFailureHandler customAuthenticationFailureHandler, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) throws Exception {
 
         http.authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
-                        .requestMatchers("/**").permitAll()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/member/**").hasRole("MEMBER")
-//                        .requestMatchers("/google/**").hasRole("GOOGLE")
-//                        .requestMatchers("/members").permitAll()
-//                        .requestMatchers("/auth/login").permitAll()
-//                        .requestMatchers("/login").permitAll()
-//                        .anyRequest().authenticated()
+//                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/member/**").hasRole("MEMBER")
+                        .requestMatchers("/google/**").hasRole("GOOGLE")
+                        .requestMatchers("/members").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/locked").permitAll()
+                        .anyRequest().authenticated()
                 );
         // csrf 비활성화
         http.csrf(AbstractHttpConfigurer::disable); // (테스트용) CSRF 비활성화
@@ -59,7 +62,8 @@ public class SecurityConfig {
         // ----> 여기서부터 시잒!!
 
         // Username어쩌구 필터보다 먼저 수행되는 필터 추가
-        http.addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(loginLockFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling(httpSecurityExceptionHandlingConfigurer ->
                 httpSecurityExceptionHandlingConfigurer.accessDeniedPage("/403")

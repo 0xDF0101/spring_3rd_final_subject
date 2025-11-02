@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import nhnacademy.springfinal.service.MessengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.AuthenticationException;
@@ -22,9 +23,12 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
     private final String KEY_NAME = "LoginCounter";
     private final String LOCK = "Lock";
+
+    private MessengerService messengerService;
     private RedisTemplate<String, Object> redisTemplate;
-    public CustomAuthenticationFailureHandler(RedisTemplate<String, Object> redisTemplate) {
+    public CustomAuthenticationFailureHandler(RedisTemplate<String, Object> redisTemplate, MessengerService messengerService) {
         this.redisTemplate = redisTemplate;
+        this.messengerService = messengerService;
     }
 
     @Override
@@ -35,9 +39,13 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         if(o == null) {
             redisTemplate.opsForValue().set(KEY_NAME, 0);
         } else {
-            long cnt = (Long) o;
-            if(cnt > 5) {
-                redisTemplate.expire(LOCK, 5, TimeUnit.MINUTES);
+            int cnt = (int)o;
+            if(cnt > 4) {
+//                redisTemplate.expire(LOCK, 5, TimeUnit.MINUTES); // LOCK이라고 레디스에 저장됨
+                redisTemplate.opsForValue().set(LOCK, "Lock", 5, TimeUnit.MINUTES);
+                log.warn("[LOCK] 비밀번호 5회 틀림");
+                messengerService.sendMessenger();
+                redisTemplate.opsForValue().set(KEY_NAME, 0); // 비밀번호 틀림 횟수 초기화
             } else {
                 redisTemplate.opsForValue().set(KEY_NAME, ++cnt);
             }

@@ -18,8 +18,8 @@ public class MessengerService {
         this.doorayMessengerClient = doorayMessengerClient;
     }
 
-    public void sendMessenger(Member member) {
-        String message = member.getId() + "아이디 비밀번호 5회 실패로 계정이 잠겼습니다.";
+    public void sendMessenger() {
+        String message = "아이디 비밀번호 5회 실패로 계정이 잠겼습니다.";
         MessageRequest messageRequest = new MessageRequest("계정 차단 알림 봇", message);
         Map<String, Object> response = doorayMessengerClient.sendMessage(messageRequest);
         System.out.println(response);
